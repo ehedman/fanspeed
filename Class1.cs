@@ -12,96 +12,89 @@
 
 using System;
 using System.Management;
-//using System.Windows.Forms;
 
 namespace fanspeed
 {
-	/// <summary>
-	/// Summary description for Class1.
-	/// </summary>
-	public class LCDSmartie
-	{
-		public LCDSmartie()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		// This function is used in LCDSmartie by using the dll command as follows:
-		//    $dll(fanspeed,1,CPU Package,0)
-		public string function1(string param1, string param2)
-		{
-			return GetCPUTemperature(param1).ToString();
-		}
-
-		// This function is used in LCDSmartie by using the dll command as follows:
-		//	  $dll(fanspeed,2,CPU,0)
-		public string function2(string param1, string param2)
-		{
-			return  Math.Round(GetCPUfanSpeed(param1)).ToString();
-		}
-
-		//
-		// Define the minimum interval that a screen should get fresh data from our plugin.
-		// The actual value used by Smartie will be the higher of this value and of the "dll check interval" setting
-		// on the Misc tab.  [This function is optional, Smartie will assume 300ms if it is not provided.]
-		// 
-		public int GetMinRefreshInterval()
-		{
-			return 300; // 300 ms (around 3 times a second)
-		}
-		private float  GetCPUTemperature(string source)
+    /// <summary>
+    /// Summary description for Class1.
+    /// </summary>
+    public class LCDSmartie
+    {
+        public LCDSmartie()
         {
-			float CpuPackageTemp = 0;
-			try
-			{
-				ManagementObjectSearcher searcher =
-				  new ManagementObjectSearcher("ROOT\\OpenHardwareMonitor",
-				  "SELECT * FROM Sensor WHERE Name ='"+source+"' AND SensorType = 'Temperature'");
+            //
+            // TODO: Add constructor logic here
+            //
+        }
 
-				foreach (ManagementObject queryObj in searcher.Get())
-				{
-					CpuPackageTemp = (float)queryObj["Value"];
-					queryObj.Dispose();
-				}
+        // This function is used in LCDSmartie by using the dll command as follows:
+        //    $dll(fanspeed,1,CPU Package,0)
+        public string function1(string param1, string param2)
+        {
+            return GetCPUTemperature(param1).ToString();
+        }
 
-				searcher.Dispose();
+        // This function is used in LCDSmartie by using the dll command as follows:
+        //	  $dll(fanspeed,2,CPU,0)
+        public string function2(string param1, string param2)
+        {
+            return Math.Round(GetCPUfanSpeed(param1)).ToString();
+        }
 
-			}
-			catch (ManagementException)
-			{
-				CpuPackageTemp = -1;
-			}
-			return CpuPackageTemp;
-		}
+        //
+        // Define the minimum interval that a screen should get fresh data from our plugin.
+        // The actual value used by Smartie will be the higher of this value and of the "dll check interval" setting
+        // on the Misc tab.  [This function is optional, Smartie will assume 300ms if it is not provided.]
+        // 
+        public int GetMinRefreshInterval()
+        {
+            return 300; // 300 ms (around 3 times a second)
+        }
+        private float GetCPUTemperature(string source)
+        {
+            float CpuPackageTemp = 0;
+            try
+            {
+                ManagementObjectSearcher searcher =
+                  new ManagementObjectSearcher("ROOT\\OpenHardwareMonitor",
+                  "SELECT * FROM Sensor WHERE Name ='" + source + "' AND SensorType = 'Temperature'");
 
-		private float GetCPUfanSpeed(string source)
-		{
-			float fanSpeed = 0;
-			try
-			{
-				ManagementObjectSearcher searcher =
-				  new ManagementObjectSearcher("ROOT\\OpenHardwareMonitor",
-				  "SELECT * FROM Sensor WHERE Name ='"+source+"' AND SensorType = 'Fan'");
+                foreach (ManagementObject queryObj in searcher.Get())
+                {
+                    CpuPackageTemp = (float)queryObj["Value"];
+                    queryObj.Dispose();
+                }
+                searcher.Dispose();
+            }
+            catch (ManagementException)
+            {
+                CpuPackageTemp = -1;
+            }
+            return CpuPackageTemp;
+        }
 
-				foreach (ManagementObject queryObj in searcher.Get())
-				{
-					fanSpeed = (float)queryObj["Value"];
-					//MessageBox.Show("Value=" + fanSpeed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					queryObj.Dispose();
-				}
+        private float GetCPUfanSpeed(string source)
+        {
+            float fanSpeed = 0;
+            try
+            {
+                ManagementObjectSearcher searcher =
+                  new ManagementObjectSearcher("ROOT\\OpenHardwareMonitor",
+                  "SELECT * FROM Sensor WHERE Name ='" + source + "' AND SensorType = 'Fan'");
 
-				searcher.Dispose();
+                foreach (ManagementObject queryObj in searcher.Get())
+                {
+                    fanSpeed = (float)queryObj["Value"];
+                    queryObj.Dispose();
+                }
+                searcher.Dispose();
 
-			}
-			catch (ManagementException)
-			{
-				fanSpeed = 0;
-			}
-			return fanSpeed;
-		}
-
-	}
-
+            }
+            catch (ManagementException)
+            {
+                fanSpeed = 0;
+            }
+            return fanSpeed;
+        }
+    }
 }

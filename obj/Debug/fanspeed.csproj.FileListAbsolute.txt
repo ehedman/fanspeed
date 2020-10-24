@@ -1,0 +1,6 @@
+G:\Source\Repos\fanspeed\bin\Debug\fanspeed.dll
+G:\Source\Repos\fanspeed\bin\Debug\fanspeed.pdb
+G:\Source\Repos\fanspeed\obj\Debug\fanspeed.csprojAssemblyReference.cache
+G:\Source\Repos\fanspeed\obj\Debug\fanspeed.csproj.CoreCompileInputs.cache
+G:\Source\Repos\fanspeed\obj\Debug\fanspeed.dll
+G:\Source\Repos\fanspeed\obj\Debug\fanspeed.pdb
